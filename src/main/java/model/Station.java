@@ -2,13 +2,15 @@ package model;
 
 public class Station
 {
-    private String name;
-    private Coordinate location;
+    private final String name;
+    private final Coordinate location;
+    private final int wheelchairBoarding;
 
-    public Station(String name, Coordinate location)
+    public Station(String name, Coordinate location, int wheelchairBoarding)
     {
         this.name = name;
         this.location = location;
+        this.wheelchairBoarding = wheelchairBoarding;
     }
 
     public String getName()
@@ -19,6 +21,11 @@ public class Station
     public Coordinate getLocation()
     {
         return location;
+    }
+
+    public int getWheelchairBoarding()
+    {
+        return wheelchairBoarding;
     }
 
     @Override
