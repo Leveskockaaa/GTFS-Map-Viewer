@@ -34,7 +34,7 @@ public class Main
             System.out.println("Error reading data files: " + exception.getMessage());
             return;
         }
-
+        
         for (StopTime stopTime : stopTimes)
         {
             System.out.println("Stop: " + stopTime.getStop().getId() + ", Trip: " + stopTime.getTrip().getId());
