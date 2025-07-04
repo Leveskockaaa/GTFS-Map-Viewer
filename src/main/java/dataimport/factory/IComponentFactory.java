@@ -2,5 +2,5 @@ package dataimport.factory;
 
 public interface IComponentFactory
 {
-    void processLine(String line);
+    void processLine(String[] line);
 }

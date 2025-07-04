@@ -16,23 +16,14 @@ public class StationFactory implements IComponentFactory
     }
 
     @Override
-    public void processLine(String line)
+    public void processLine(String[] line)
     {
-        String[] parts = line.split(",");
-
-        if (parts.length < 9)
-        {
-            System.out.println("Invalid station data: " + line);
-            return;
-        }
-
-        String stationName = parts[1];
-        float latitude = Float.parseFloat(parts[2]);
-        float longitude = Float.parseFloat(parts[3]);
-        int wheelchairBoarding = Integer.parseInt(parts[8]);
+        String stationName = line[1];
+        float latitude = Float.parseFloat(line[2]);
+        float longitude = Float.parseFloat(line[3]);
 
         Coordinate location = new Coordinate(latitude, longitude);
-        Station station = new Station(stationName, location, wheelchairBoarding);
+        Station station = new Station(stationName, location, 0);
         stations.add(station);
     }
 

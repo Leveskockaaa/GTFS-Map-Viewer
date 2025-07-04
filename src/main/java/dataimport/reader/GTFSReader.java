@@ -1,8 +1,10 @@
 package dataimport.reader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import com.opencsv.CSVReader;
 
 import dataimport.factory.IComponentFactory;
 
@@ -34,33 +36,25 @@ public abstract class GTFSReader implements IGTFSReader
     @Override
     public void readData()
     {
-        File file = new File(filePath);
-        if (!isFileValid(file))
+        try (Reader reader = Files.newBufferedReader(Paths.get(filePath)))
         {
-            System.out.println("Invalid file: " + filePath);
-            return;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file)))
-        {
-            String line;
-            while ((line = reader.readLine()) != null)
+            try (CSVReader csvReader = new CSVReader(reader))
             {
-                if (componentFactory != null)
+                String[] line;
+                csvReader.readNext();
+                while ((line = csvReader.readNext()) != null)
                 {
-                    componentFactory.processLine(line);
+                    if (componentFactory != null)
+                    {
+                        componentFactory.processLine(line);
+                    }
                 }
             }
         }
         catch (Exception exception)
         {
-            System.out.println("Error reading file: " + filePath);
+            System.out.println("Error reading CSV file: " + filePath);
             exception.printStackTrace();
         }
-    }
-
-    protected boolean isFileValid(File file)
-    {
-        return !(file == null || !file.exists() || !file.isFile());
     }
 }

@@ -2,42 +2,33 @@ package main;
 
 import java.util.List;
 
-import com.opencsv.exceptions.CsvValidationException;
-
-import dataimport.premodel.Route;
-import dataimport.premodel.Stop;
-import dataimport.premodel.StopTime;
-import dataimport.premodel.Trip;
-import dataimport.prereader.PreRouteReader;
-import dataimport.prereader.PreStopReader;
-import dataimport.prereader.PreStopTimeReader;
-import dataimport.prereader.PreTripReader;
+import collection.StationCollection;
+import dataimport.reader.StationReader;
+import model.Station;
+import view.Converter;
+import view.MapWindow;
+import view.StationCollectionView;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        List<Stop> stops;
-        List<Route> routes;
-        List<Trip> trips;
-        List<StopTime> stopTimes;
+        List<Station> stations;
 
-        try
-        {
-            stops = PreStopReader.readStops("src/main/resources/stops.txt");
-            routes = PreRouteReader.readRoutes("src/main/resources/routes.txt");
-            trips = PreTripReader.readTrips("src/main/resources/trips.txt", routes);
-            stopTimes = PreStopTimeReader.readStopTimes("src/main/resources/stop_times.txt", stops, trips);
-        }
-        catch (CsvValidationException exception)
-        {
-            System.out.println("Error reading data files: " + exception.getMessage());
-            return;
-        }
-        
-        for (StopTime stopTime : stopTimes)
-        {
-            System.out.println("Stop: " + stopTime.getStop().getId() + ", Trip: " + stopTime.getTrip().getId());
-        }
+        StationReader stationReader = new StationReader("src/main/resources/stops.txt");
+        stationReader.readData();
+        stations = stationReader.getStations();
+
+        StationCollection stationCollection = new StationCollection();
+        stationCollection.setStations(stations);
+
+        int width = 1600;
+        int height = 900;
+        Converter.setBounds(stationCollection.getMinLatitude(), stationCollection.getMaxLatitude(), stationCollection.getMinLongitude(), stationCollection.getMaxLongitude());
+        Converter.setDimensions(width, height);
+
+        MapWindow mapWindow = new MapWindow(width, height);
+        StationCollectionView stationCollectionView = new StationCollectionView(stationCollection);
+        mapWindow.addPanel(stationCollectionView);
     }
 }
