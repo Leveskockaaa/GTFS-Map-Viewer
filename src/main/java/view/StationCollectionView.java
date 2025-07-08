@@ -30,8 +30,8 @@ public class StationCollectionView extends JPanel
 
         for (Station station : stationCollection.getStations())
         {
-            StationView stationView = new StationView(station);
-            graphics.fillOval(stationView.getX() - 5, stationView.getY() - 5, 10, 10);
+            Position position = Converter.convertCoordinatePosition(station.getLocation());
+            graphics.fillOval(position.getX() - 5, position.getY() - 5, 5, 5);
         }
     }
 }

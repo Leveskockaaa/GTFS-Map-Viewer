@@ -1,6 +1,5 @@
 package collection;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Station;
@@ -14,13 +13,14 @@ public class StationCollection
     private float minLongitude;
     private float maxLongitude;
 
-    public StationCollection()
+    public StationCollection(List<Station> stations)
     {
-        this.stations = new ArrayList<>();
+        this.stations = stations;
         this.minLatitude = Float.MAX_VALUE;
         this.maxLatitude = Float.MIN_VALUE;
         this.minLongitude = Float.MAX_VALUE;
         this.maxLongitude = Float.MIN_VALUE;
+        processData();
     }
 
     public void setStations(List<Station> stations)
@@ -40,7 +40,7 @@ public class StationCollection
         return stations;
     }
 
-    public void processData()
+    public final void processData()
     {
         for (Station station : stations)
         {
